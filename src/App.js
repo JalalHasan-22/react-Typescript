@@ -1,12 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import PokemonRow from './components/Pokemon-Row/Pokemon-row';
-import Pokemon from './pokemon.json';
 import PokemonInfo from './components/Pokemon-Info/PokemonInfo';
 
 function App() {
   const [filter, setFilter] = useState('');
   const [selectedItem, setSelectedItem] = useState('');
+  const [pokemon, setPokemon] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:3000/REACT-TYPESCRIPT/pokemon.json')
+      .then((promise) => promise.json())
+      .then((result) => setPokemon(result));
+  }, []);
+
   return (
     <div
       style={{
@@ -36,11 +43,12 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {Pokemon.filter((pokemon) =>
-              pokemon.name.english
-                .toLocaleLowerCase()
-                .includes(filter.toLocaleLowerCase()),
-            )
+            {pokemon
+              .filter((pokemon) =>
+                pokemon.name.english
+                  .toLocaleLowerCase()
+                  .includes(filter.toLocaleLowerCase()),
+              )
               .slice(0, 20)
               .map((pokemon) => {
                 return (

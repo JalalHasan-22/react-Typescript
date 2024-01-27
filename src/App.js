@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import PokemonRow from './components/Pokemon-Row/Pokemon-row';
 import PokemonInfo from './components/Pokemon-Info/PokemonInfo';
 import styled from '@emotion/styled';
+import PokemonFilter from './components/Pokemon-filter/PokemonFilter';
+import PokemonTable from './components/Pokemon-table/PokemonTable';
 
 const Title = styled.h1`
   text-align: center;
@@ -12,12 +13,6 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 30% 70%;
   grid-gap: 1rem;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 0.2rem;
-  font-size: x-large;
 `;
 function App() {
   const [filter, setFilter] = useState('');
@@ -39,38 +34,13 @@ function App() {
       }}
     >
       <Title>Pokemon Search</Title>
-      <Input
-        type='text'
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-      />
+      <PokemonFilter filter={filter} setFilter={setFilter} />
       <Container>
-        <table width='100%'>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Type</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pokemon
-              .filter((pokemon) =>
-                pokemon.name.english
-                  .toLocaleLowerCase()
-                  .includes(filter.toLocaleLowerCase()),
-              )
-              .slice(0, 20)
-              .map((pokemon) => {
-                return (
-                  <PokemonRow
-                    pokemon={pokemon}
-                    key={pokemon?.id}
-                    onSelect={(pokemon) => setSelectedItem(pokemon)}
-                  />
-                );
-              })}
-          </tbody>
-        </table>
+        <PokemonTable
+          pokemon={pokemon}
+          filter={filter}
+          setSelectedItem={setSelectedItem}
+        />
         {selectedItem && <PokemonInfo {...selectedItem} />}
       </Container>
     </div>

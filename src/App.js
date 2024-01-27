@@ -2,7 +2,23 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import PokemonRow from './components/Pokemon-Row/Pokemon-row';
 import PokemonInfo from './components/Pokemon-Info/PokemonInfo';
+import styled from '@emotion/styled';
 
+const Title = styled.h1`
+  text-align: center;
+`;
+
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 30% 70%;
+  grid-gap: 1rem;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 0.2rem;
+  font-size: x-large;
+`;
 function App() {
   const [filter, setFilter] = useState('');
   const [selectedItem, setSelectedItem] = useState('');
@@ -22,19 +38,13 @@ function App() {
         paddingTop: '1rem',
       }}
     >
-      <h1 className='title'>Pokemon Search</h1>
-      <input
+      <Title>Pokemon Search</Title>
+      <Input
         type='text'
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
       />
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '70% 30%',
-          gridGap: '1rem',
-        }}
-      >
+      <Container>
         <table width='100%'>
           <thead>
             <tr>
@@ -62,7 +72,7 @@ function App() {
           </tbody>
         </table>
         {selectedItem && <PokemonInfo {...selectedItem} />}
-      </div>
+      </Container>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import PokemonInfo from './components/Pokemon-Info/PokemonInfo';
 import styled from '@emotion/styled';
 import PokemonFilter from './components/Pokemon-filter/PokemonFilter';
 import PokemonTable from './components/Pokemon-table/PokemonTable';
-
+import PokemonContext from './context/PokemonContext';
 const Title = styled.h1`
   text-align: center;
 `;
@@ -26,24 +26,31 @@ function App() {
   }, []);
 
   return (
-    <div
-      style={{
-        margin: 'auto',
-        width: 800,
-        paddingTop: '1rem',
+    <PokemonContext.Provider
+      value={{
+        filter,
+        setFilter,
+        selectedItem,
+        setSelectedItem,
+        pokemon,
+        setPokemon,
       }}
     >
-      <Title>Pokemon Search</Title>
-      <PokemonFilter filter={filter} setFilter={setFilter} />
-      <Container>
-        <PokemonTable
-          pokemon={pokemon}
-          filter={filter}
-          setSelectedItem={setSelectedItem}
-        />
-        {selectedItem && <PokemonInfo {...selectedItem} />}
-      </Container>
-    </div>
+      <div
+        style={{
+          margin: 'auto',
+          width: 800,
+          paddingTop: '1rem',
+        }}
+      >
+        <Title>Pokemon Search</Title>
+        <PokemonFilter />
+        <Container>
+          <PokemonTable />
+          <PokemonInfo />
+        </Container>
+      </div>
+    </PokemonContext.Provider>
   );
 }
 

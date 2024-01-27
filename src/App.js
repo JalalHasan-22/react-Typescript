@@ -1,4 +1,5 @@
 import './App.css';
+import PokemonRow from './components/Pokemon-Row/Pokemon-row';
 import Pokemon from './pokemon.json';
 
 function App() {
@@ -20,12 +21,7 @@ function App() {
         </thead>
         <tbody>
           {Pokemon.slice(0, 20).map((pokemon) => {
-            return (
-              <tr key={pokemon?.id}>
-                <td>{pokemon?.name?.english}</td>
-                <td>{pokemon?.type.join(', ')}</td>
-              </tr>
-            );
+            return <PokemonRow pokemon={pokemon} key={pokemon?.id} />;
           })}
         </tbody>
       </table>

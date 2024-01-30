@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import './App.css';
 import PokemonInfo from './components/Pokemon-Info/PokemonInfo';
 import styled from '@emotion/styled';
@@ -14,26 +14,49 @@ const Container = styled.div`
   grid-template-columns: 30% 70%;
   grid-gap: 1rem;
 `;
+
+const pokemonReducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_FILTER':
+      return {
+        ...state,
+        filter: action.payload,
+      };
+    case 'SET_POKEMON':
+      return {
+        ...state,
+        pokemon: action.payload,
+      };
+    case 'SET_SELECTED_POKEMON':
+      return {
+        ...state,
+        selectedItem: action.payload,
+      };
+    default:
+      throw new Error();
+  }
+};
 function App() {
   const [filter, setFilter] = useState('');
   const [selectedItem, setSelectedItem] = useState('');
   const [pokemon, setPokemon] = useState([]);
+  const [state, dispatch] = useReducer(pokemonReducer, {
+    filter: '',
+    pokemon: [],
+    selectedItem: null,
+  });
 
   useEffect(() => {
     fetch('http://localhost:3000/REACT-TYPESCRIPT/pokemon.json')
       .then((promise) => promise.json())
-      .then((result) => setPokemon(result));
+      .then((result) => dispatch({ type: 'SET_POKEMON', payload: result }));
   }, []);
 
   return (
     <PokemonContext.Provider
       value={{
-        filter,
-        setFilter,
-        selectedItem,
-        setSelectedItem,
-        pokemon,
-        setPokemon,
+        state,
+        dispatch,
       }}
     >
       <div
